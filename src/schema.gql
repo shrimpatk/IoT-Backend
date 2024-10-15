@@ -4,6 +4,8 @@
 
 input CreateUserInput {
   displayName: String
+  email: String!
+  password: String!
   username: String!
 }
 
@@ -18,13 +20,24 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input LoginInput {
+  password: String!
+  username: String!
+}
+
+type LoginResponse {
+  access_token: String!
+}
+
 type Mutation {
   createUser(createUserdata: CreateUserInput!): User!
   createUserSettings(createUserSettingsData: CreateUserSettingInput!): UserSetting!
+  login(loginInput: LoginInput!): LoginResponse!
 }
 
 type Query {
   getUserById(id: String!): User
+  me: User!
   sensorUpdate: [SensorsData!]
 }
 

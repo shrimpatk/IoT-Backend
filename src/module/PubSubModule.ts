@@ -1,5 +1,5 @@
-import { Module } from "@nestjs/common";
-import { PubSub } from "graphql-subscriptions";
+import { Module } from '@nestjs/common';
+import { PubSub } from 'graphql-subscriptions';
 
 @Module({
   providers: [

@@ -8,16 +8,25 @@ import { UserService } from './service/userService';
 import { SensorsResolver } from './graphql/resolvers/SensorsResolver';
 import { PubSubModule } from './module/PubSubModule';
 import { SensorService } from './service/sensorsService';
+import { ConfigModule } from '@nestjs/config';
+import { AuthResolver } from './graphql/resolvers/AuthResolver';
+import { AuthService } from './service/authService';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     PubSubModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET, // Use environment variable in production
+      signOptions: { expiresIn: '1h' },
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       installSubscriptionHandlers: true,
       subscriptions: {
         'graphql-ws': true,
-        "subscriptions-transport-ws": true
+        'subscriptions-transport-ws': true,
       },
       autoSchemaFile: 'src/schema.gql',
       sortSchema: true,
@@ -25,10 +34,12 @@ import { SensorService } from './service/sensorsService';
   ],
   controllers: [],
   providers: [
-    PrismaService, 
+    AuthResolver,
+    AuthService,
+    PrismaService,
     UserService,
-    UserResolver, 
-    SensorService, 
+    UserResolver,
+    SensorService,
     SensorsResolver,
     UserSettingsResolver,
   ],

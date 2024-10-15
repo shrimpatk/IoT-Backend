@@ -1,27 +1,49 @@
-import { Inject } from "@nestjs/common";
-import { UserSetting } from "@prisma/client";
-import { User } from "src/graphql/models/user/User";
-import { PrismaService } from "src/prisma.service";
+import { Inject } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
+import * as bcrypt from 'bcryptjs';
+import { CreateUserInput } from '../graphql/utils/CreateUserInput';
 
 export class UserService {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
   async getUserById(id: string) {
-    return await this.prisma.user.findUnique({ 
+    return this.prisma.user.findUnique({
       where: {
-        id
+        id,
       },
       include: {
-        roles: true
-      }
-    })
+        roles: true,
+      },
+    });
   }
 
-  // async getAllUser(): Promise<User[]> {
-  //   return await this.prisma.user.findMany();
-  // }
+  async findOneByName(username: string) {
+    return this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+    });
+  }
 
-  // async getUserSetting(userId: string): Promise<UserSetting> {
-  //   return await this.prisma.userSetting.findUnique({ where: { userId } })
-  // }
+  async createUser(createUserInput: CreateUserInput) {
+    const { password, username, email, displayName } = createUserInput;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          username,
+          email,
+          h_password: hashedPassword,
+          displayName: displayName || username.slice(3),
+        },
+      });
+
+      return user;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 }

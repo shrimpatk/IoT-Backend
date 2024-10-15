@@ -1,5 +1,5 @@
-import { ObjectType, Field, ID } from "@nestjs/graphql";
-import { User } from "./User";
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { User } from './User';
 
 @ObjectType()
 export class UserSetting {
