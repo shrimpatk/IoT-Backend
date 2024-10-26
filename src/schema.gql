@@ -27,12 +27,14 @@ input LoginInput {
 
 type LoginResponse {
   access_token: String!
+  user: User!
 }
 
 type Mutation {
   createUser(createUserdata: CreateUserInput!): User!
   createUserSettings(createUserSettingsData: CreateUserSettingInput!): UserSetting!
   login(loginInput: LoginInput!): LoginResponse!
+  logout: Boolean!
 }
 
 type Query {
@@ -80,7 +82,7 @@ type User {
   displayName: String
   email: String!
   id: ID!
-  roles: [Role!]!
+  roles: [Role!]
   settings: UserSetting
   updatedAt: DateTime!
   username: String!

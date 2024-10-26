@@ -20,8 +20,8 @@ export class User {
   @Field(() => UserSetting, { nullable: true })
   settings?: UserSetting;
 
-  @Field(() => [Role])
-  roles: Role[];
+  @Field(() => [Role], { nullable: true })
+  roles?: Role[];
 
   @Field()
   createdAt: Date;

@@ -11,15 +11,31 @@ export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Mutation(() => LoginResponse)
-  async login(@Args('loginInput') loginInput: LoginInput) {
+  async login(
+    @Args('loginInput') loginInput: LoginInput,
+    @Context() context: any,
+  ) {
     const user = await this.authService.validateUser(
       loginInput.username,
       loginInput.password,
     );
+
     if (!user) {
       throw new Error('Invalid credentials');
     }
-    return this.authService.login(user);
+
+    return this.authService.login(user, context.res);
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async logout(@Context() context: any): Promise<boolean> {
+    const userId = context.req.user.userId;
+    await this.authService.logout(userId);
+
+    context.res.clearCookie('refresh_token');
+
+    return true;
   }
 
   @UseGuards(GqlAuthGuard)

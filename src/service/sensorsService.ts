@@ -5,7 +5,7 @@ import { WebSocket } from 'ws';
 
 @Injectable()
 export class SensorService {
-  private NODE_RED_URL = 'ws://192.168.1.5:1880/ws/pub';
+  private NODE_RED_URL = 'ws://192.168.1.2:1880/ws/pub';
   private ws: WebSocket;
 
   constructor() {
