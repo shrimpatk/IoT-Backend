@@ -1,8 +1,9 @@
 import { Resolver, Query, Subscription } from '@nestjs/graphql';
 import { SensorsData } from '../models/SensorsData';
 import { PubSub } from 'graphql-subscriptions';
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { SensorService } from 'src/service/sensorsService';
+import { GqlAuthGuard } from '../../guards/GqlAuthGuard';
 
 @Resolver(() => SensorsData)
 export class SensorsResolver {

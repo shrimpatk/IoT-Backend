@@ -38,6 +38,6 @@ export class SensorsData {
   @Field(() => SensorFields)
   fields: SensorFields;
 
-  @Field(() => Date)
-  timestamp: Date;
+  @Field(() => String)
+  timestamp: string;
 }

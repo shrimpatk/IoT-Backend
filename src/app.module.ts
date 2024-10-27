@@ -12,10 +12,13 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthResolver } from './graphql/resolvers/AuthResolver';
 import { AuthService } from './service/authService';
 import { JwtModule } from '@nestjs/jwt';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TokenCleanUpService } from './service/tokenCleanUpService';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ScheduleModule.forRoot(),
     PubSubModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET, // Use environment variable in production
@@ -35,14 +38,15 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [],
   providers: [
+    PrismaService,
     AuthResolver,
     AuthService,
-    PrismaService,
+    TokenCleanUpService,
     UserService,
     UserResolver,
+    UserSettingsResolver,
     SensorService,
     SensorsResolver,
-    UserSettingsResolver,
   ],
 })
 export class AppModule {}

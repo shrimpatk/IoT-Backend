@@ -5,6 +5,7 @@ import { GqlAuthGuard } from '../../guards/GqlAuthGuard';
 import { LoginResponse } from '../models/auth/LoginResponse';
 import { LoginInput } from '../utils/LoginInput';
 import { User } from '../models/user/User';
+import { RefreshTokenResponse } from '../models/auth/RefreshTokenResponse';
 
 @Resolver()
 export class AuthResolver {
@@ -25,6 +26,19 @@ export class AuthResolver {
     }
 
     return this.authService.login(user, context.res);
+  }
+
+  @Mutation(() => RefreshTokenResponse)
+  async refreshAccessToken(@Context() context: any) {
+    const refreshToken = context.req.cookies['refresh_token'];
+
+    console.log(refreshToken);
+
+    if (!refreshToken) {
+      throw new Error('Invalid refreshToken');
+    }
+
+    return this.authService.refreshAccessTokens(refreshToken);
   }
 
   @Mutation(() => Boolean)

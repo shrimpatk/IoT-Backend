@@ -35,12 +35,18 @@ type Mutation {
   createUserSettings(createUserSettingsData: CreateUserSettingInput!): UserSetting!
   login(loginInput: LoginInput!): LoginResponse!
   logout: Boolean!
+  refreshAccessToken: RefreshTokenResponse!
 }
 
 type Query {
   getUserById(id: String!): User
   me: User!
   sensorUpdate: [SensorsData!]
+}
+
+type RefreshTokenResponse {
+  access_token: String!
+  refresh_token: String!
 }
 
 type Role {
@@ -69,7 +75,7 @@ type SensorsData {
   fields: SensorFields!
   measurement: String!
   tags: SensorTags!
-  timestamp: DateTime!
+  timestamp: String!
 }
 
 type Subscription {

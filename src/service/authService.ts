@@ -61,16 +61,22 @@ export class AuthService {
     });
   }
 
-  async refreshTokens(refreshToken: string) {
+  async refreshAccessTokens(refreshToken: string) {
     try {
       const payload = await this.jwtService.verify(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET,
       });
 
       const user = await this.usersService.getUserById(payload.sub);
+
+      if (!user) {
+        return new UnauthorizedException('User not found');
+      }
+
       const storedToken = await this.prisma.refreshToken.findFirst({
         where: {
           userId: user.id,
+          token: refreshToken,
           expiresAt: {
             gt: new Date(),
           },
@@ -78,16 +84,12 @@ export class AuthService {
       });
 
       if (!storedToken) {
-        throw new UnauthorizedException('Invalid refresh token');
+        return new UnauthorizedException('Invalid refresh token');
       }
 
-      const tokens = await this.generateTokens(user);
+      const newAccessToken = await this.generateAccessTokens(user);
 
-      await this.prisma.refreshToken.delete({
-        where: { id: storedToken.id },
-      });
-
-      return tokens;
+      return { access_token: newAccessToken };
     } catch (error) {
       console.error(error);
       throw new UnauthorizedException('Invalid refresh token');
