@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from './userService';
+import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma.service';
 
@@ -70,7 +70,7 @@ export class AuthService {
       const user = await this.usersService.getUserById(payload.sub);
 
       if (!user) {
-        return new UnauthorizedException('User not found');
+        return new UnauthorizedException('UserModel not found');
       }
 
       const storedToken = await this.prisma.refreshToken.findFirst({

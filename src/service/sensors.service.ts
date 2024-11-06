@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import axios from 'axios';
-import { SensorsData } from 'src/graphql/models/SensorsData';
 import { WebSocket } from 'ws';
+import { SensorDataInterface } from '../interfaces/sensor-data.interface';
 
 @Injectable()
 export class SensorService {
   private NODE_RED_URL = 'ws://192.168.1.2:1880/ws/pub';
   private ws: WebSocket;
+  private lastSentTime: number = 0;
+  private THROTTLE_TIME = 2000;
+  private latestData: SensorDataInterface | null = null;
 
   constructor() {
     this.connectWebSocket();
@@ -29,22 +31,26 @@ export class SensorService {
     });
   }
 
-  async getLatestSensorData(): Promise<SensorsData[]> {
-    try {
-      const response = await axios.get<SensorsData[]>(
-        `${this.NODE_RED_URL}/api/sensor-data`,
-      );
-      return response.data;
-    } catch {
-      return null;
-    }
+  async getLatestSensorData(): Promise<SensorDataInterface> {
+    return this.latestData || null;
   }
 
-  startDataStream(callback: (data: SensorsData[]) => void) {
+  startDataStream(callback: (data: SensorDataInterface) => void) {
     this.ws.on('message', (message: Buffer) => {
       try {
-        const data = JSON.parse(message.toString()) as SensorsData[];
-        callback(data);
+        const now = Date.now();
+        const data = JSON.parse(message.toString()) as SensorDataInterface;
+        console.log('data: ', data);
+
+        this.latestData = data;
+
+        if (now - this.lastSentTime >= this.THROTTLE_TIME) {
+          callback(data);
+          this.lastSentTime = now;
+          console.log('Pub');
+        } else {
+          console.log('Skipped publishing (throttled)');
+        }
       } catch (error) {
         console.error('Error parsing sensor data:', error);
       }

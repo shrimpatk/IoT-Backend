@@ -1,11 +1,10 @@
 import { Resolver, Query, Subscription } from '@nestjs/graphql';
-import { SensorsData } from '../models/SensorsData';
+import { SensorData } from '../models/sensor-data.model';
 import { PubSub } from 'graphql-subscriptions';
-import { Inject, UseGuards } from '@nestjs/common';
-import { SensorService } from 'src/service/sensorsService';
-import { GqlAuthGuard } from '../../guards/GqlAuthGuard';
+import { Inject } from '@nestjs/common';
+import { SensorService } from 'src/service/sensors.service';
 
-@Resolver(() => SensorsData)
+@Resolver(() => SensorData)
 export class SensorsResolver {
   constructor(
     @Inject('PUB_SUB') private pubSub: PubSub,
@@ -16,12 +15,12 @@ export class SensorsResolver {
     });
   }
 
-  @Query(() => [SensorsData], { nullable: true })
+  @Query(() => SensorData, { nullable: true })
   sensorUpdate() {
     return this.sensorService.getLatestSensorData();
   }
 
-  @Subscription(() => [SensorsData], {
+  @Subscription(() => SensorData, {
     name: 'sensorsRead',
   })
   subscribeToSensorsRead() {

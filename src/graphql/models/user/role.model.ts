@@ -1,8 +1,8 @@
-import { ObjectType, ID, Field } from "@nestjs/graphql";
-import { UserRole } from "./UserRole";
+import { ObjectType, ID, Field } from '@nestjs/graphql';
+import { UserRoleModel } from './user-role.model';
 
 @ObjectType()
-export class Role {
+export class RoleModel {
   @Field(() => ID)
   id: string;
 
@@ -12,8 +12,8 @@ export class Role {
   @Field({ nullable: true })
   description?: string;
 
-  @Field(() => [UserRole])
-  users: UserRole[];
+  @Field(() => [UserRoleModel])
+  users: UserRoleModel[];
 
   @Field()
   created_at: Date;

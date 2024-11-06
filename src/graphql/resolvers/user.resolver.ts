@@ -1,26 +1,26 @@
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
-import { User } from '../models/user/User';
+import { UserModel } from '../models/user/user.model';
 import { CreateUserInput } from '../utils/CreateUserInput';
-import { UserService } from 'src/service/userService';
+import { UserService } from 'src/service/user.service';
 import { UseGuards } from '@nestjs/common';
-import { JwtStrategy } from '../../guards/JwtStrategy';
+import { JwtStrategy } from '../../guards/jwt.strategy';
 
-@Resolver(() => User) // Tell GraphQL that User is a parent
+@Resolver(() => UserModel) // Tell GraphQL that UserModel is a parent
 export class UserResolver {
   constructor(private userService: UserService) {}
 
   @UseGuards(JwtStrategy)
-  @Query(() => User, { nullable: true })
+  @Query(() => UserModel, { nullable: true })
   getUserById(@Args('id') id: string) {
     return this.userService.getUserById(id);
   }
 
-  // @ResolveField((returns) => UserSetting, { name: 'settings', nullable: true })
-  // getUserSetting(@Parent() user: User) {
+  // @ResolveField((returns) => UserSettingModel, { name: 'settings', nullable: true })
+  // getUserSetting(@Parent() user: UserModel) {
   // 	return this.userService.getUserSetting(user.id);
   // }
 
-  @Mutation(() => User)
+  @Mutation(() => UserModel)
   createUser(@Args('createUserdata') createUserData: CreateUserInput) {
     return this.userService.createUser(createUserData);
   }

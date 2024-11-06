@@ -1,10 +1,10 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { AuthService } from '../../service/authService';
-import { GqlAuthGuard } from '../../guards/GqlAuthGuard';
+import { AuthService } from '../../service/auth.service';
+import { GqlAuthGuard } from '../../guards/gql-auth.guard';
 import { LoginResponse } from '../models/auth/LoginResponse';
 import { LoginInput } from '../utils/LoginInput';
-import { User } from '../models/user/User';
+import { UserModel } from '../models/user/user.model';
 import { RefreshTokenResponse } from '../models/auth/RefreshTokenResponse';
 
 @Resolver()
@@ -53,7 +53,7 @@ export class AuthResolver {
   }
 
   @UseGuards(GqlAuthGuard)
-  @Query(() => User)
+  @Query(() => UserModel)
   async me(@Context() context: any) {
     return context.req.user;
   }

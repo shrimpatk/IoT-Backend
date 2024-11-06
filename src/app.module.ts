@@ -1,19 +1,19 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { UserResolver } from './graphql/resolvers/UserResolver';
-import { UserSettingsResolver } from './graphql/resolvers/UserSettingResolver';
+import { UserResolver } from './graphql/resolvers/user.resolver';
+import { UserSettingsResolver } from './graphql/resolvers/user-setting.resolver';
 import { PrismaService } from './prisma.service';
-import { UserService } from './service/userService';
-import { SensorsResolver } from './graphql/resolvers/SensorsResolver';
-import { PubSubModule } from './module/PubSubModule';
-import { SensorService } from './service/sensorsService';
+import { UserService } from './service/user.service';
+import { SensorsResolver } from './graphql/resolvers/sensors.resolver';
+import { PubSubModule } from './module/pub-sub.module';
+import { SensorService } from './service/sensors.service';
 import { ConfigModule } from '@nestjs/config';
-import { AuthResolver } from './graphql/resolvers/AuthResolver';
-import { AuthService } from './service/authService';
+import { AuthResolver } from './graphql/resolvers/auth.resolver';
+import { AuthService } from './service/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ScheduleModule } from '@nestjs/schedule';
-import { TokenCleanUpService } from './service/tokenCleanUpService';
+import { TokenCleanupService } from './service/token-cleanup.service';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import { TokenCleanUpService } from './service/tokenCleanUpService';
     PrismaService,
     AuthResolver,
     AuthService,
-    TokenCleanUpService,
+    TokenCleanupService,
     UserService,
     UserResolver,
     UserSettingsResolver,
