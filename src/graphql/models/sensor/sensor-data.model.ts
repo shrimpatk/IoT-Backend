@@ -9,7 +9,7 @@ import {
   SensorsInterface,
   StatusInterface,
   TemperatureInterface,
-} from '../../interfaces/sensor-data.interface';
+} from '../../../interfaces/sensor-data.interface';
 
 @ObjectType()
 class Temperature {

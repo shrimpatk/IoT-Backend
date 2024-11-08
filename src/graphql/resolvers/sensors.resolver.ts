@@ -1,5 +1,13 @@
-import { Resolver, Query, Subscription } from '@nestjs/graphql';
-import { SensorData } from '../models/sensor-data.model';
+import {
+  Resolver,
+  Query,
+  Subscription,
+  Mutation,
+  Args,
+  Int,
+  Context,
+} from '@nestjs/graphql';
+import { SensorData } from '../models/sensor/sensor-data.model';
 import { PubSub } from 'graphql-subscriptions';
 import { Inject, UseGuards } from '@nestjs/common';
 import { SensorService } from 'src/service/sensors.service';
@@ -14,6 +22,15 @@ export class SensorsResolver {
     this.sensorService.startDataStream((data) => {
       pubSub.publish('sensorsRead', { sensorsRead: data });
     });
+  }
+
+  @Mutation(() => Int)
+  @UseGuards(GqlAuthGuard)
+  async updateThrottleTime(
+    @Args('time', { type: () => Int }) time: number,
+  ): Promise<number> {
+    await this.sensorService.updateThrottleTime(time);
+    return time;
   }
 
   @Query(() => SensorData, { nullable: true })

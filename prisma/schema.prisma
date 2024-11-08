@@ -69,3 +69,8 @@ model UserRole {
 
   @@unique([userId, roleId])
 }
+
+model GlobalSetting {
+  key   String @id
+  value Int
+}
