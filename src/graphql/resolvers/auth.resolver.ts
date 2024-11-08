@@ -1,11 +1,11 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthService } from '../../service/auth.service';
 import { GqlAuthGuard } from '../../guards/gql-auth.guard';
-import { LoginResponse } from '../models/auth/LoginResponse';
+import { LoginResponse } from '../models/auth/login-response.model';
 import { LoginInput } from '../utils/LoginInput';
-import { UserModel } from '../models/user/user.model';
-import { RefreshTokenResponse } from '../models/auth/RefreshTokenResponse';
+import { User } from '../models/user/user.model';
+import { RefreshTokenResponse } from '../models/auth/refresh-token-response.model';
 
 @Resolver()
 export class AuthResolver {
@@ -22,7 +22,7 @@ export class AuthResolver {
     );
 
     if (!user) {
-      throw new Error('Invalid credentials');
+      throw new UnauthorizedException('Invalid username or password');
     }
 
     return this.authService.login(user, context.res);
@@ -53,7 +53,7 @@ export class AuthResolver {
   }
 
   @UseGuards(GqlAuthGuard)
-  @Query(() => UserModel)
+  @Query(() => User)
   async me(@Context() context: any) {
     return context.req.user;
   }

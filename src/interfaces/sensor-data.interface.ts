@@ -1,4 +1,3 @@
-// sensor-data.interface.ts
 export interface TemperatureInterface {
   value: number;
   unit: string;

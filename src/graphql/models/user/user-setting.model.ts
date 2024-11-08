@@ -1,16 +1,16 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { UserModel } from './user.model';
+import { User } from './user.model';
 
 @ObjectType()
-export class UserSettingModel {
+export class UserSetting {
   @Field(() => ID)
   id: string;
 
   @Field(() => String)
   userId: string;
 
-  @Field(() => UserModel)
-  user: UserModel;
+  @Field(() => User)
+  user: User;
 
   @Field({ defaultValue: false })
   receiveNotifications: boolean;

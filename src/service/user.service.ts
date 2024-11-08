@@ -1,8 +1,9 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcryptjs';
 import { CreateUserInput } from '../graphql/utils/CreateUserInput';
 
+@Injectable()
 export class UserService {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
@@ -18,11 +19,17 @@ export class UserService {
   }
 
   async findOneByName(username: string) {
-    return this.prisma.user.findUnique({
+    const result = await this.prisma.user.findUnique({
       where: {
         username,
       },
     });
+
+    if (!result) {
+      return null;
+    }
+
+    return result;
   }
 
   async createUser(createUserInput: CreateUserInput) {

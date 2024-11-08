@@ -61,7 +61,7 @@ input LoginInput {
   username: String!
 }
 
-type LoginResponse {
+type LoginResponseModel {
   access_token: String!
   user: UserModel!
 }
@@ -69,9 +69,9 @@ type LoginResponse {
 type Mutation {
   createUser(createUserdata: CreateUserInput!): UserModel!
   createUserSettings(createUserSettingsData: CreateUserSettingInput!): UserSettingModel!
-  login(loginInput: LoginInput!): LoginResponse!
+  login(loginInput: LoginInput!): LoginResponseModel!
   logout: Boolean!
-  refreshAccessToken: RefreshTokenResponse!
+  refreshAccessToken: RefreshTokenResponseModel!
 }
 
 type Query {
@@ -80,7 +80,7 @@ type Query {
   sensorUpdate: SensorData
 }
 
-type RefreshTokenResponse {
+type RefreshTokenResponseModel {
   access_token: String!
   refresh_token: String!
 }

@@ -40,7 +40,7 @@ export class SensorService {
       try {
         const now = Date.now();
         const data = JSON.parse(message.toString()) as SensorDataInterface;
-        console.log('data: ', data);
+        console.log('data: ', data.devices[0].sensors);
 
         this.latestData = data;
 

@@ -1,10 +1,10 @@
-import { InputType, Field, Int, Float } from "@nestjs/graphql";
+import { InputType, Field, Float } from '@nestjs/graphql';
 
 @InputType()
 export class CreateUserSettingInput {
-  @Field(returns => Float)
+  @Field(() => Float)
   temperature: number;
 
-  @Field(returns => Float)
+  @Field(() => Float)
   humidity: number;
 }
