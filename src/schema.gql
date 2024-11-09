@@ -61,37 +61,39 @@ input LoginInput {
   username: String!
 }
 
-type LoginResponseModel {
+type LoginResponse {
   access_token: String!
-  user: UserModel!
+  user: User!
 }
 
 type Mutation {
-  createUser(createUserdata: CreateUserInput!): UserModel!
-  createUserSettings(createUserSettingsData: CreateUserSettingInput!): UserSettingModel!
-  login(loginInput: LoginInput!): LoginResponseModel!
+  createUser(createUserdata: CreateUserInput!): User!
+  createUserSettings(createUserSettingsData: CreateUserSettingInput!): UserSetting!
+  login(loginInput: LoginInput!): LoginResponse!
   logout: Boolean!
-  refreshAccessToken: RefreshTokenResponseModel!
+  refreshAccessToken: RefreshTokenResponse!
+  updateThrottleTime(time: Int!): Int!
 }
 
 type Query {
-  getUserById(id: String!): UserModel
-  me: UserModel!
+  getThrottleTime: Int!
+  getUserById(id: String!): User
+  me: User!
   sensorUpdate: SensorData
 }
 
-type RefreshTokenResponseModel {
+type RefreshTokenResponse {
   access_token: String!
   refresh_token: String!
 }
 
-type RoleModel {
+type Role {
   created_at: DateTime!
   description: String
   id: ID!
   name: String!
   updated_at: DateTime!
-  users: [UserRoleModel!]!
+  users: [UserRole!]!
 }
 
 type SensorData {
@@ -121,34 +123,34 @@ type Temperature {
   value: Float!
 }
 
-type UserModel {
+type User {
   createdAt: DateTime!
   delatedAt: DateTime
   displayName: String
   email: String!
   id: ID!
-  roles: [RoleModel!]
-  settings: UserSettingModel
+  roles: [Role!]
+  settings: UserSetting
   updatedAt: DateTime!
   username: String!
 }
 
-type UserRoleModel {
+type UserRole {
   created_at: DateTime!
   id: ID!
-  role: RoleModel!
+  role: Role!
   roleId: String!
   updated_at: DateTime!
-  user: UserModel!
+  user: User!
   userId: String!
 }
 
-type UserSettingModel {
+type UserSetting {
   createdAt: DateTime!
   id: ID!
   receiveEmails: Boolean!
   receiveNotifications: Boolean!
   updatedAt: DateTime!
-  user: UserModel!
+  user: User!
   userId: String!
 }

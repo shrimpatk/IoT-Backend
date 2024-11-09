@@ -40,7 +40,7 @@ export interface StatusInterface {
 }
 
 export interface SensorsInterface {
-  Environmental: EnvironmentalInterface;
+  environmental: EnvironmentalInterface;
   air_quality: AirQualityInterface;
 }
 

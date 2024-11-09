@@ -1,5 +1,5 @@
 import { ID, Field, ObjectType } from '@nestjs/graphql';
-import { UserSettingModel } from './user-setting.model';
+import { UserSetting } from './user-setting.model';
 import { Role } from './role.model';
 
 @ObjectType()
@@ -17,8 +17,8 @@ export class User {
   displayName?: string;
 
   // UserSettings is child of UserModel so UserModel is a parent
-  @Field(() => UserSettingModel, { nullable: true })
-  settings?: UserSettingModel;
+  @Field(() => UserSetting, { nullable: true })
+  settings?: UserSetting;
 
   @Field(() => [Role], { nullable: true })
   roles?: Role[];

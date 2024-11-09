@@ -25,12 +25,16 @@ export class SensorsResolver {
   }
 
   @Mutation(() => Int)
-  @UseGuards(GqlAuthGuard)
   async updateThrottleTime(
     @Args('time', { type: () => Int }) time: number,
   ): Promise<number> {
     await this.sensorService.updateThrottleTime(time);
     return time;
+  }
+
+  @Query(() => Int)
+  async getThrottleTime(): Promise<number> {
+    return await this.sensorService.getThrottleTime();
   }
 
   @Query(() => SensorData, { nullable: true })
