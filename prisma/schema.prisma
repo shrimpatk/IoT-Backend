@@ -97,8 +97,8 @@ model ShoppingListItem {
   id             String       @id @default(uuid())
   shoppingListId String
   shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id])
-  groceryItemId  String?
-  GroceryItem    GroceryItem? @relation(fields: [groceryItemId], references: [id])
+  groceryItemId  String
+  groceryItem    GroceryItem  @relation(fields: [groceryItemId], references: [id])
   quantity       Int          @default(1)
   bought         Boolean      @default(false)
   notes          String?
